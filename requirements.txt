@@ -13,4 +13,4 @@ sounddevice
 ruaccent
 fastapi
 uvicorn[standard]
-git+https://github.com/TalapMukhamejan/vits2_inference.git@master
+dotenv

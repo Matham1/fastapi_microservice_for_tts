@@ -1,0 +1,3 @@
+[submodule "tts_inference"]
+	path = tts_inference
+	url = https://github.com/Matham1/vits2_inference
