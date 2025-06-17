@@ -1,10 +1,9 @@
 import io
 import os
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Response
 from pydantic import BaseModel
-from fastapi.responses import StreamingResponse
-from app.tts import TTSService
 from typing import Dict
+from app.tts import TTSService
 
 class TTSRequest(BaseModel):
     text: str
@@ -69,8 +68,8 @@ async def synthesize(req: TTSRequest):
     print(f"[saved] {filepath}")
     # ─────────────────────────────────────────────────────────────────────────
 
-    return StreamingResponse(
-        io.BytesIO(wav_bytes),
+    return Response(
+        content=wav_bytes,
         media_type="audio/wav",
         headers={"Content-Disposition": f"inline; filename=tts_{req.lang}.wav"}
     )
