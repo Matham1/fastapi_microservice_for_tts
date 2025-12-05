@@ -2,9 +2,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import onnxruntime
-import utils
+from tts_inference import utils
 # We assume this function can be modified or we get the audio data from it
-from infer_onnx import synthesize_speech_to_memory 
+from tts_inference.infer_onnx import synthesize_speech_to_memory 
 import io
 
 class TTSService:
