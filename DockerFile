@@ -1,26 +1,22 @@
-# minimal with espeak-ng and basic audio tooling
 FROM python:3.11-slim
-
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-
 WORKDIR /app
 
-# install required OS packages (espeak-ng, ffmpeg, libsndfile)
-# combine apt calls to keep layers small, then clean apt cache
+# install OS deps, patchelf, and crucially, PortAudio libraries
 RUN apt-get update \
- && apt-get install -y --no-install-recommends \
-      espeak-ng \
-      ffmpeg \
-      libsndfile1 \
-      ca-certificates \
- && rm -rf /var/lib/apt/lists/*
+  && apt-get install -y --no-install-recommends \
+       espeak-ng \
+       ffmpeg \
+       libsndfile1 \
+       portaudio19-dev \
+       ca-certificates \
+       patchelf \
+  && rm -rf /var/lib/apt/lists/*
 
-# python deps
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-
 COPY . .
 
 EXPOSE 8001
-CMD ["uvicorn", "app.main:app", "--bind", "0.0.0.0:8001", "--preload", "--timeout", "180"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
